@@ -9,7 +9,7 @@ def find_videos(keyword, after: 1.months.ago, before: Time.now) #検索キーワ
   opt = {
     q: keyword,
     type: 'video',
-    max_results: 2,
+    max_results: 1,
     order: :date,
     page_token: next_page_token,
     published_after: after.iso8601,
@@ -23,4 +23,4 @@ def find_videos(keyword, after: 1.months.ago, before: Time.now) #検索キーワ
   end
 end
 
-find_videos('HTML')  
+find_videos('マナブ')  
