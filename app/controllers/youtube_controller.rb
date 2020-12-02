@@ -25,6 +25,6 @@ class YoutubeController < ApplicationController
   end
   
   def moriya
-    
+    @youtuber = Youtuber.all
   end  
 end

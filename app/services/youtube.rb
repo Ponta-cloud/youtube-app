@@ -18,10 +18,35 @@ class Youtube
     response = youtube.list_channels("snippet", options)
     response.items.each do |item|
       snippet = item.snippet
-      puts "チャンネル名"
-      puts "https://www.youtube.com/channel/#{item.id}"
-      puts snippet.title
-      puts snippet.thumbnails.default.url
+      @id = item.id
+      @url = "https://www.youtube.com/channel/#{item.id}"
+      @title = snippet.title
+      @image = snippet.thumbnails.default.url
     end
+    
+    link_statistics = youtube.list_channels("statistics", options)
+    link_statistics.items.each do |item|
+      statistics = item.statistics
+      @view = statistics.view_count
+      @subscriber = statistics.subscriber_count
+      @video = statistics.video_count
+    end  
+    id,url,title,image,view,subscriber,video = @id, @url, @title, @image, @view, @subscriber, @video
+    youtuber_detail_save(id,url,title,image,view,subscriber,video) 
+  end
+  
+  def youtuber_detail_save(id,url,title,image,view,subscriber,video) 
+      youtuber = Youtuber.where(channel_data: id).first_or_initialize
+      youtuber.url = url
+      youtuber.name = title
+      youtuber.channel_image = image
+      youtuber.channel_view_count = view
+      youtuber.channel_subscriber_count = subscriber
+      youtuber.channel_video_count = video
+      youtuber.save
   end  
+  
 end  
+
+
+
