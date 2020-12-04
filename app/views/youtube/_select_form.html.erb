@@ -1,0 +1,9 @@
+<%= form_with model: @youtuber, url: search_path, method: :get, local: true do |form| %>
+<%= form.select :keyword, [ 
+                            ['登録者数が多い順', 'channel_subscriber_count'],
+                            ['総再生回数が多い順', 'channel_view_count'],
+                            ['動画総本数が多い順', 'channel_video_count'],
+                            ['投稿が新しい順', 'new'],
+                          ]%>
+  <%= form.submit "検索" ,name: nil  %>
+<% end %>  

@@ -2,7 +2,7 @@ require 'google/apis/youtube_v3'
 class Youtube 
 
   def each_link
-    channel = ["UCb9h8EpBlGHv9Z896fu4yeQ","UCkB8HnJSDSJ2hkLQFUc-YrQ"]
+    channel = ["UCb9h8EpBlGHv9Z896fu4yeQ","UCkB8HnJSDSJ2hkLQFUc-YrQ","UCti6dG0zSAetLGGYcgNML4Q"]
     channel.each do |link|
       youtube(link)
     end  
