@@ -1,26 +1,52 @@
 require 'google/apis/youtube_v3'
-require 'active_support/all'
+class YoutubeAPI 
 
-GOOGLE_API_KEY=""
-def find_videos(keyword, after: 1.months.ago, before: Time.now) #検索キーワードと検索範囲を変えれるように引数に値を取っています
-  service = Google::Apis::YoutubeV3::YouTubeService.new
-  service.key = GOOGLE_API_KEY
-  next_page_token = nil
-  opt = {
-    q: keyword,
-    type: 'video',
-    max_results: 1,
-    order: :date,
-    page_token: next_page_token,
-    published_after: after.iso8601,
-    published_before: before.iso8601
-  }
-  results = service.list_searches(:snippet, opt)
-  results.items.each do |item|
-    id = item.id
-    snippet = item.snippet
-    puts "\"#{snippet.title}\" by #{snippet.channel_title} (id: #{id.video_id}) (#{snippet.published_at})"
+  def each_link
+    channel = ["UCb9h8EpBlGHv9Z896fu4yeQ","UCkB8HnJSDSJ2hkLQFUc-YrQ","UCti6dG0zSAetLGGYcgNML4Q"]
+    channel.each do |link|
+      youtube(link)
+    end  
   end
-end
+  
+  def youtube(link)
+    youtube = Google::Apis::YoutubeV3::YouTubeService.new
+    youtube.key = Rails.application.credentials.google[:api_key]
+    options = {
+      :id => link#YouTubeチャンネルのIDを指定
+    }
+    
+    response = youtube.list_channels("snippet", options)
+    response.items.each do |item|
+      snippet = item.snippet
+      @id = item.id
+      @url = "https://www.youtube.com/channel/#{item.id}"
+      @title = snippet.title
+      @image = snippet.thumbnails.default.url
+    end
+    
+    link_statistics = youtube.list_channels("statistics", options)
+    link_statistics.items.each do |item|
+      statistics = item.statistics
+      @view = statistics.view_count
+      @subscriber = statistics.subscriber_count
+      @video = statistics.video_count
+    end  
+    id,url,title,image,view,subscriber,video = @id, @url, @title, @image, @view, @subscriber, @video
+    youtuber_detail_save(id,url,title,image,view,subscriber,video) 
+  end
+  
+  def youtuber_detail_save(id,url,title,image,view,subscriber,video) 
+      youtuber = Youtuber.where(channel_data: id).first_or_initialize
+      youtuber.url = url
+      youtuber.name = title
+      youtuber.channel_image = image
+      youtuber.channel_view_count = view
+      youtuber.channel_subscriber_count = subscriber
+      youtuber.channel_video_count = video
+      youtuber.save
+  end  
+  
+end  
 
-find_videos('マナブ')  
+
+
