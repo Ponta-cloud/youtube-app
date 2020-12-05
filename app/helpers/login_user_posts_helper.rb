@@ -1,0 +1,2 @@
+module LoginUserPostsHelper
+end

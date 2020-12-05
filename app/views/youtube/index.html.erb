@@ -3,7 +3,7 @@
 <%= render 'select_form' %>
 
 <% @youtubers.each do |you| %>
- <h3><%= link_to "#{you.name}","/#{you.channel_data}" %></h3>
+ <h3><%= link_to "#{you.name}", show_path(id: you.id), method: :get %></h3>
  <img src= <%= you.channel_image %> alt="海の写真" title="空と海">
 <% end %>
 

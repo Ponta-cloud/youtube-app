@@ -1,11 +1,10 @@
-<% @manabu.each do |you| %>
+<% @youtubers_data.each do |you| %>
  <h1><%= link_to "#{you.name}","#{you.url}" %></h1>
- <img src= <%= you.channel_image %> alt="マナブ" title="マナブ">
+ <img src= <%= you.channel_image %> alt="youtuberトプ画" title="youtuberトプ画">
  <p>チャンネル登録者数</p>
  <p><%= you.channel_subscriber_count %></p>
  <p>チャンネル動画本数</p>
  <p><%= you.channel_video_count %></p>
  <p>チャンネル再生回数</p>
  <p><%= you.channel_view_count %></p>
-
 <% end %>

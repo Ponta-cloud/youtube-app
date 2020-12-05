@@ -4,14 +4,13 @@ class YoutubeController < ApplicationController
     @youtubers = Youtuber.all
   end
   
-  def manabu
-    @manabu= Youtuber.where(channel_data: "UCb9h8EpBlGHv9Z896fu4yeQ")
+  def show
+    @youtubers_data = Youtuber.where(id: params[:id])
   end  
   
- def search
+  def search
     selection = params[:keyword]
     @youtubers = Youtuber.sort(selection)
- end
-
+  end
 
 end
